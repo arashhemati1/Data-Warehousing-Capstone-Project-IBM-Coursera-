@@ -10,13 +10,3 @@ This repository contains my work for the Data Warehousing Capstone Project on Co
 
 ## Project Overview
 The goal of this capstone is to apply the skills and knowledge gained from the course to design a data platform using MySQL for an OLTP database scenario.
-
-## Modules
-### Module 1: OLTP Database Design
-- **Objective**: Design a database named `sales` and create a table `sales_data`.
-- **Tasks Completed**:
-  - Created a MySQL database and table.
-  - Wrote a bash script to export data from the `sales_data` table.
-- **Key Commands**:
-  ```sql
-  CREATE DATABASE sales;
