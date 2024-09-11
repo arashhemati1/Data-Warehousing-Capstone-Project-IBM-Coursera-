@@ -65,7 +65,7 @@ This module involves creating and setting up the OLTP database with MySQL as par
   This will open a text editor where you can write your script.
   Write the Bash Script:
 - **Code**:
-
+- ```sh
   #!/bin/bash
 
   # Define database and table names
