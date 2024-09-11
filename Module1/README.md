@@ -57,6 +57,24 @@ This module involves creating and setting up the OLTP database with MySQL as par
 
 ## Step 8: Write a Bash Script to Export Data
 - **Task**: Write a bash script named datadump.sh to export all rows from the sales_data table to a file named sales_data.sql.
+- Open your terminal in the Cloud IDE or your local machine.
+- Create the script file by typing:
 - **Code**:
   ```sh
+  nano datadump.sh
+  This will open a text editor where you can write your script.
+  Write the Bash Script:
+- **Code**:
+
   #!/bin/bash
+
+  # Define database and table names
+  DATABASE="sales"
+  TABLE="sales_data"
+  OUTPUT_FILE="sales_data.sql"
+  
+  # Export data from the sales_data table to sales_data.sql
+  mysqldump $DATABASE $TABLE > $OUTPUT_FILE
+  
+  # Print a success message
+  echo "Data has been exported to $OUTPUT_FILE"
