@@ -18,19 +18,19 @@ This module involves creating and setting up the OLTP database with MySQL as par
     price INT,
     quantity INT,
     timestamp DATETIME
-);
+  );
 
 
 ## Step 3: Import Data from oltpdata.csv
 - **Task**: Import data into the sales_data table from the oltpdata.csv file.
 - **Code**:
   ```sql
-LOAD DATA INFILE '/path/to/oltpdata.csv'
-INTO TABLE sales_data
-FIELDS TERMINATED BY ',' 
-ENCLOSED BY '"'
-LINES TERMINATED BY '\n'
-IGNORE 1 ROWS;
+  LOAD DATA INFILE '/path/to/oltpdata.csv'
+  INTO TABLE sales_data
+  FIELDS TERMINATED BY ',' 
+  ENCLOSED BY '"'
+  LINES TERMINATED BY '\n'
+  IGNORE 1 ROWS;
 
 
 
