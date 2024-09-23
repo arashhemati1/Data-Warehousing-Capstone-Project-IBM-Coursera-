@@ -35,7 +35,6 @@ psql --username=postgres --host=localhost --dbname=sales_new \
 # Replace <query_to_export_dimdate> with the actual export command.
 psql --username=postgres --host=localhost --dbname=sales_new \
 -c "<query_to_export_dimdate>"
-
 # Step 9: Export FactSales table to a CSV file.
 # Replace <query_to_export_factsales> with the actual export command.
 psql --username=postgres --host=localhost --dbname=sales_new \
