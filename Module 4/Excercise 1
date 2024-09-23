@@ -1,3 +1,42 @@
-wget https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBM-DB0321EN-SkillsNetwork/ETL/sales_olddata.csv
-wget https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBM-DB0321EN-SkillsNetwork/ETL/sales_newdata.csv
-wget https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/geRwyvvpVRM-4QsI1HBmbw/setupmysqldb.sh
+#!/bin/sh
+
+# Step 1: Extract data from the sales_data table in MySQL that is not more than 4 hours old and save it to sales.csv.
+
+# Replace <your_password> and <your_database> with actual values.
+mysql -h mysql -P 3306 -u root --password=<your_password> --database=<your_database> \
+--execute="SELECT * FROM sales_data WHERE timestamp >= NOW() - INTERVAL 4 HOUR" --batch --silent > /home/project/sales.csv
+
+# Step 2: Replace all tabs in the CSV with commas to format it correctly for loading into PostgreSQL.
+tr '\t' ',' < /home/project/sales.csv > /home/project/temp_sales_commas.csv
+
+# Step 3: Move the comma-separated temporary file to replace the original sales.csv.
+mv /home/project/temp_sales_commas.csv /home/project/sales.csv
+
+# Step 4: Load the cleaned sales.csv into the sales_data table in PostgreSQL.
+# Replace <your_postgres_password> with your actual PostgreSQL password.
+export PGPASSWORD=<your_postgres_password>
+psql --username=postgres --host=localhost --dbname=sales_new \
+-c "\COPY sales_data(rowid, product_id, customer_id, price, quantity, timestamp) FROM '/home/project/sales.csv' DELIMITER ',' CSV HEADER;"
+
+# Step 5: Delete sales.csv after loading to keep the workspace clean.
+rm /home/project/sales.csv
+
+# Step 6: Load data into the DimDate table from the sales_data table.
+# Replace <query_for_dimdate> with the actual query needed to populate the DimDate table.
+psql --username=postgres --host=localhost --dbname=sales_new \
+-c "<query_for_dimdate>"
+
+# Step 7: Load data into the FactSales table from the sales_data table.
+# Replace <query_for_factsales> with the actual query needed to populate the FactSales table.
+psql --username=postgres --host=localhost --dbname=sales_new \
+-c "<query_for_factsales>"
+
+# Step 8: Export DimDate table to a CSV file.
+# Replace <query_to_export_dimdate> with the actual export command.
+psql --username=postgres --host=localhost --dbname=sales_new \
+-c "<query_to_export_dimdate>"
+
+# Step 9: Export FactSales table to a CSV file.
+# Replace <query_to_export_factsales> with the actual export command.
+psql --username=postgres --host=localhost --dbname=sales_new \
+-c "<query_to_export_factsales>"
