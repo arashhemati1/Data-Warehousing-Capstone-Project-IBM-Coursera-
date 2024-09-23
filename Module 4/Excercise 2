@@ -1,0 +1,26 @@
+# Step 6: Load data into the DimDate table from the sales_data table.
+# The query extracts date parts from the sales_data table and inserts them into DimDate.
+psql --username=postgres --host=localhost --dbname=sales_new \
+-c "INSERT INTO DimDate (date_key, full_date, year, quarter, month, day) 
+    SELECT DISTINCT
+        TO_CHAR(timestamp, 'YYYYMMDD')::INT AS date_key,
+        timestamp::DATE AS full_date,
+        EXTRACT(YEAR FROM timestamp) AS year,
+        'Q' || EXTRACT(QUARTER FROM timestamp) AS quarter,
+        EXTRACT(MONTH FROM timestamp) AS month,
+        EXTRACT(DAY FROM timestamp) AS day
+    FROM sales_data;"
+
+# Step 7: Load data into the FactSales table from the sales_data table.
+# The query selects relevant sales metrics to populate the FactSales table.
+psql --username=postgres --host=localhost --dbname=sales_new \
+-c "INSERT INTO FactSales (sales_key, date_key, product_id, customer_id, price, quantity, total_amount)
+    SELECT 
+        rowid AS sales_key,
+        TO_CHAR(timestamp, 'YYYYMMDD')::INT AS date_key,
+        product_id,
+        customer_id,
+        price,
+        quantity,
+        price * quantity AS total_amount
+    FROM sales_data;"
