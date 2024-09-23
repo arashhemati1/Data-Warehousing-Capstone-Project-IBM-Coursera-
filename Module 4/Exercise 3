@@ -1,0 +1,7 @@
+# Step 8: Export DimDate table to DimDate.csv
+psql --username=postgres --host=localhost --dbname=sales_new \
+-c "\COPY DimDate TO '/home/project/DimDate.csv' DELIMITER ',' CSV HEADER;"
+
+# Step 9: Export FactSales table to FactSales.csv
+psql --username=postgres --host=localhost --dbname=sales_new \
+-c "\COPY FactSales TO '/home/project/FactSales.csv' DELIMITER ',' CSV HEADER;"
